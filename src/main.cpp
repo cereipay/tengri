@@ -1024,7 +1024,7 @@ int64 GetProofOfWorkReward(unsigned int nBits)
 	int64 nSubsidy = MAX_MINT_PROOF_OF_WORK;
 	
         if (nBestHeight + 1 <= 2 ) {  // PRM COIN
-	        nSubsidy = 210000000000000 * COIN;
+	        nSubsidy = 210000000000 * COIN;
         }
 
 
@@ -2573,6 +2573,37 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nTime    = nChainStartTime + 24;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
         block.nNonce   = 37601;
+
+	                if (block.GetHash() != hashGenesisBlock)
+        {
+            unsigned int max_nonce = 0xffff0000;
+            block_header res_header;
+            uint256 result;
+            unsigned int nHashesDone = 0;
+            unsigned int nNonceFound;
+            uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+            printf("hashTarget = %s\n", hashTarget.ToString().c_str());
+
+            do {
+                nNonceFound = scanhash_scrypt(
+                            (block_header *)&block.nVersion,
+                            max_nonce,
+                            nHashesDone,
+                            UBEGIN(result),
+                            &res_header,
+                            GetNfactor(block.nTime)
+                );
+                if ((unsigned int) -1 == nNonceFound || result > hashTarget) {
+                    printf("Hashes done: %d; result = %s...\n", nHashesDone, result.ToString().substr(0, 20).c_str());
+                    block.nTime++;
+                    continue;
+                }
+            } while(result > hashTarget);
+
+            block.nNonce = nNonceFound;
+            printf("\nHash found:\n block.GetHash = %s\n nNonce = %d\n nTime = %d\n", block.GetHash().ToString().c_str(), nNonceFound, block.nTime);
+        }
+
 
         //// debug print
         printf("block.GetHash() == %s\n", block.GetHash().ToString().c_str());

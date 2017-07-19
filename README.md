@@ -1,4 +1,4 @@
-KcpCoin official development tree
+TengriCoin official development tree
 ===================================
 
 * Scrypt-chacha based coin
@@ -7,15 +7,8 @@ KcpCoin official development tree
 * Block Maturity: 100 Confirms
 * Transaction Maturity: 6 Confirmations
 * Total 2100000000000000 coins.
-* RPCPort: 23004
-* Network Port: 23005
-
-Proof-of-Work
--------------
-
-* 10 minute Proof-of-Work block targets.
-* The Proof-of-Work subsidy decreases as difficulty increases.
-* Proof-of-Work reward is 100 coins.
+* RPCPort: 7001
+* Network Port: 7002
 
 
 Proof-of-Stake

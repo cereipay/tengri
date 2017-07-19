@@ -1045,7 +1045,7 @@ Address: %4
 	<message>
         <location line="+58"/>
         <source>Number of transactions:</source>
-        <translation>거래 횟수:</translation>
+        <translation>transactions :</translation>
     </message>
 
     <message>
